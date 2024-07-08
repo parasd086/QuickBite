@@ -15,6 +15,7 @@ const Header = () => {
         <div className="md:hidden">
           <MobileNav />
         </div>
+        {/* in small screen it will default to hidden in and for medium size and up it will be block */}
         <div className="hidden md:block">
           <MainNav />
         </div>
