@@ -13,6 +13,8 @@ import {
 import { Input } from "../../components/ui/input";
 import LoadingButton from "../../components/LoadingButton";
 import { Button } from "../../components/ui/button";
+import { User } from "../../types";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   email: z.string().optional(), //pre-populated
@@ -26,14 +28,22 @@ const formSchema = z.object({
 export type UserFormData = z.infer<typeof formSchema>;
 
 type Props = {
+  currentUser: User;
   onSave: (userProfileData: UserFormData) => void;
   isLoading: boolean;
 };
 
-const UserProfileForm = ({ onSave, isLoading }: Props) => {
+const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
   const form = useForm<UserFormData>({
     resolver: zodResolver(formSchema), //connect formSchema to React-hook-form which can be done using a resolver
+    defaultValues: currentUser,
   });
+
+  //if the User gets updated then re-populate defaultValues
+  useEffect(() => {
+    form.reset(currentUser);
+  }, [currentUser, form]);
+
   return (
     <Form {...form}>
       <form

@@ -15,5 +15,6 @@ router.put(
   validateMyUserRequest,
   MyUserController.updateCurrentUser
 );
+router.get("/", jwtCheck, jwtParse, MyUserController.getCurrentUser);
 
 export default router;
