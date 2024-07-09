@@ -1,6 +1,6 @@
 //here, code that uses Auth0 SDK to connect to our Auth0 a/c
 
-import { AppState, Auth0Provider, User } from "@auth0/auth0-react";
+import { Auth0Provider } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
@@ -22,8 +22,7 @@ const Auth0ProviderWithNavigate = ({ children }: Props) => {
 
   //this function gets called when the user gets redirected back to our app
   //appState(arg)- is going to contain some stored data that we might need when the user gets redirected back
-  const onRedirectCallback = (appState?: AppState, user?: User) => {
-    console.log(user);
+  const onRedirectCallback = () => {
     navigate("/auth-callback");
   };
 
