@@ -45,6 +45,7 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
   }, [currentUser, form]);
 
   return (
+    // spreading all the methods and objects and stuff that we get from useForm hook onto the shadcn form
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSave)}
@@ -57,8 +58,13 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
           </FormDescription>
         </div>
         <FormField
+          // control links this component to "form" const we defined above
           control={form.control}
-          name="email"
+          name="email" //use intellisense to choose name as defined in schema
+          //name="email": This specifies the name of the field, which corresponds to the key in the form's state where the value of this input will be stored.
+          //render=  specifies how and what to render the form field
+          //field = it contains properties and methods handling state updates, validation, and other form-related functionalities seamlessly, that are necessary for connecting the form input to the form state managed by react-hook-form
+          //hover over "field" to see its type
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
