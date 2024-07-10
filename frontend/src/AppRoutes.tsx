@@ -28,6 +28,7 @@ const AppRoutes = () => {
           }
         />
       </Route>
+
       {/* catch all route */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
