@@ -6,7 +6,7 @@ const ProtectedRoute = () => {
   const { isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
-    return null;
+    return null; //do nothing untile useAuth0 stuff is finished
   }
 
   //Outlet= is childrens of a Route
@@ -14,6 +14,7 @@ const ProtectedRoute = () => {
     return <Outlet />;
   }
 
+  //last case- if user is not authenticated
   return <Navigate to="/" replace />;
 };
 

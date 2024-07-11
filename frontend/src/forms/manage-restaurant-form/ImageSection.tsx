@@ -1,3 +1,4 @@
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   FormControl,
   FormDescription,
@@ -9,7 +10,10 @@ import { Input } from "@/components/ui/input";
 import { useFormContext } from "react-hook-form";
 
 const ImageSection = () => {
-  const { control } = useFormContext();
+  //watch- This method will watch specified inputs and return their values. It is useful to render input value and for determining what to render by condition.
+  //https://react-hook-form.com/docs/useform/watch
+  const { control, watch } = useFormContext();
+  const existingImageUrl = watch("imageUrl"); //get cloudinary url
 
   return (
     <div className="space-y-2">
@@ -22,6 +26,14 @@ const ImageSection = () => {
       </div>
 
       <div className="flex flex-col gap-8 md:w-[50%]">
+        {existingImageUrl && (
+          <AspectRatio ratio={16 / 9}>
+            <img
+              src={existingImageUrl}
+              className="rounded-md object-cover h-full w-full"
+            />
+          </AspectRatio>
+        )}
         <FormField
           control={control}
           name="imageFile"
