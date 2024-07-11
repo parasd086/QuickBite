@@ -5,8 +5,6 @@ import { z } from "zod";
 import { Separator } from "@/components/ui/separator";
 import LoadingButton from "@/components/LoadingButton";
 import { Button } from "@/components/ui/button";
-import { Restaurant } from "@/types";
-import { useEffect } from "react";
 import DetailsSection from "./DetailsSection";
 import CuisinesSection from "./CuisinesSection";
 import MenuSection from "./MenuSection";
@@ -60,7 +58,44 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
   });
 
   const onSubmit = (formDataJson: RestaurantFormData) => {
-    //Convert formDataJson(that Form gives us) to a FormData object so that we can submit it
+    //Convert formDataJson(that Form gives us) to a FormData object so that we can send it to BE via POST req. And also onSave only accept FormData type as argument.
+    const formData = new FormData();
+
+    formData.append("restaurantName", formDataJson.restaurantName);
+    formData.append("city", formDataJson.city);
+    formData.append("country", formDataJson.country);
+
+    //convert the price to the lowest currency denomination so the reason we do this is because it makes it easier to send those values to stripe and it's also consistent because then all the developers know that anytime they're working with prices that the backend's going to accept uh the lowest denomination
+    //1GBP = 100pence thats why multiplying with 100 for lowest denomination.
+    //converting number to strings because HTTP requests will only deal with strings.
+    formData.append(
+      "deliveryPrice",
+      (formDataJson.deliveryPrice * 100).toString()
+    );
+
+    formData.append(
+      "estimatedDeliveryTime",
+      formDataJson.estimatedDeliveryTime.toString()
+    );
+
+    formDataJson.cuisines.forEach((cuisine, index) => {
+      formData.append(`cuisines[${index}]`, cuisine);
+    });
+
+    formDataJson.menuItems.forEach((menuItem, index) => {
+      formData.append(`menuItems[${index}][name]`, menuItem.name);
+      formData.append(
+        `menuItems[${index}][price]`,
+        (menuItem.price * 100).toString()
+      );
+    });
+
+    if (formDataJson.imageFile) {
+      formData.append(`imageFile`, formDataJson.imageFile);
+    }
+
+    //calling onSave prop with formData.
+    onSave(formData);
   };
 
   return (
