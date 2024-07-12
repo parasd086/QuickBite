@@ -8,6 +8,16 @@ const router = express.Router();
 //validate city endpoint
 //Its a public route
 router.get(
+  "/:restaurantId",
+  param("restaurantId")
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage("RestaurantId paramenter must be a valid string"),
+  RestaurantController.getRestaurant
+);
+
+router.get(
   "/search/:city",
   param("city")
     .isString()
