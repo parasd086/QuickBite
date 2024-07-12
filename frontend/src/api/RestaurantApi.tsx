@@ -13,7 +13,7 @@ export const useSearchRestaurants = (
     const params = new URLSearchParams();
     params.set("searchQuery", searchState.searchQuery);
     params.set("page", searchState.page.toString());
-    //params.set("selectedCuisines", searchState.selectedCuisines.join(","));
+    params.set("selectedCuisines", searchState.selectedCuisines.join(",")); //array to comma separated strings
     //params.set("sortOption", searchState.sortOption);
 
     const response = await fetch(
