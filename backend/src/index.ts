@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import myUserRoute from "./routes/MyUserRoute";
 import myRestaurantRoute from "./routes/MyRestaurantRoute";
 import { v2 as cloudinary } from "cloudinary";
+import restaurantRoute from "./routes/RestaurantRoute";
 
 //casting/force this type to be a string
 mongoose
@@ -36,6 +37,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/my/user", myUserRoute);
 app.use("/api/my/restaurant", myRestaurantRoute);
+app.use("/api/restaurant", restaurantRoute);
 
 app.listen(7000, () => {
   console.log("Server started ");
