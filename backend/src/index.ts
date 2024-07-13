@@ -21,9 +21,13 @@ cloudinary.config({
 
 const app = express();
 
+app.use(cors());
+
+//inorder for stripe to validate request it needs access to the raw data in the request, so we need to put express.json middleware below it.
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
+
 //will automatically convert the body of any req we make to our API server to JSON
 app.use(express.json());
-app.use(cors());
 
 //Health-endpoint
 app.get("/health", async (req: Request, res: Response) => {

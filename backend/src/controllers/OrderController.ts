@@ -5,7 +5,7 @@ import Order from "../models/order";
 
 const STRIPE = new Stripe(process.env.STRIPE_API_KEY as string);
 const FRONTEND_URL = process.env.FRONTEND_URL as string;
-//const STRIPE_ENDPOINT_SECRET = process.env.STRIPE_WEBHOOK_SECRET as string;
+const STRIPE_ENDPOINT_SECRET = process.env.STRIPE_WEBHOOK_SECRET as string;
 
 type CheckoutSessionRequest = {
   cartItems: {
@@ -23,10 +23,36 @@ type CheckoutSessionRequest = {
 };
 
 const stripeWebhookHandler = async (req: Request, res: Response) => {
-  console.log("RECEIVED EVENT");
-  console.log("=============");
-  console.log("event:", req.body);
-  res.send();
+  let event;
+
+  try {
+    const sig = req.headers["stripe-signature"];
+    //first stripe is going to verify req has come from stripe by using endpoint secret, if it has, then its going to construct the event. If there are any errors its going to catch it in "catch" block.
+    //This is a good form of validation as it prevents anyone from posting a req. to our webhook endpoint in order to create an order for themselves. This endpoint will only ever going to work if the event comes from stripe.
+    event = STRIPE.webhooks.constructEvent(
+      req.body,
+      sig as string,
+      STRIPE_ENDPOINT_SECRET
+    );
+  } catch (error: any) {
+    console.log(error);
+    return res.status(400).send(`Webhook error: ${error.message}`);
+  }
+
+  if (event.type === "checkout.session.completed") {
+    const order = await Order.findById(event.data.object.metadata?.orderId); //when we created checkoutSession in stripe we attached orderId to metadata(see below)
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    order.totalAmount = event.data.object.amount_total;
+    order.status = "paid";
+
+    await order.save();
+  }
+
+  res.status(200).send();
 };
 
 const createCheckoutSession = async (req: Request, res: Response) => {
