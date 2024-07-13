@@ -22,7 +22,7 @@ const HomePage = () => {
 
         <SearchBar
           onSubmit={handleSearchSubmit}
-          placeHolder="Search by City or Town"
+          placeHolder="Search by City(London and Manchester for testing) or Town"
         />
       </div>
       <div className="grid md:grid-cols-2 gap-5">
