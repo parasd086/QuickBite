@@ -2,6 +2,9 @@
 
 Welcome to the QuickBite a Food Ordering Platform, a comprehensive and fully responsive web application developed using the MERN stack. This platform allows users to explore and order from a variety of restaurants with ease. It leverages cutting-edge technologies to ensure a seamless and secure user experience.
 
+Deployed URL-
+[Qucikbite](https://quickbite-eyni.onrender.com)
+
 ## Technologies Used
 
 - **Frontend**: ReactJs, Typescript, TailwindCSS, shadcn-ui
