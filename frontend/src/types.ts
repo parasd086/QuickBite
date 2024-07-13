@@ -27,6 +27,7 @@ export type Restaurant = {
   lastUpdated: string;
 };
 
+//orderStatus can only be one of these.
 export type OrderStatus =
   | "placed"
   | "paid"
