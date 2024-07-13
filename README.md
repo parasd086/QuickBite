@@ -107,12 +107,12 @@ VITE_AUTH0_AUDIENCE=your-auth0-audience
 1. Start the backend server:
    ```bash
    cd backend
-   npm start
+   npm run dev
    ```
 2. Start the frontend development server:
    ```bash
    cd frontend
-   npm start
+   npm run dev
    ```
 
 ### Access the Application
